@@ -2,7 +2,7 @@ mixin catalogPageNav(page)
   .gr-catalog-nav(class="flex justify-between text-xs")
     if page.prev
       a.transition-color(href=page.prev.url) &larr; Prev
-    a.transition-color.ml-2(href="/" class="md:hidden") &sect; Index
+    a.transition-color(href="/" class=`md:hidden ${page.prev ? "ml-2" : ""}`) &sect; Index
     if page.next
       a.transition-color.ml-2(href=page.next.url) Next &rarr;
 
