@@ -1,0 +1,36 @@
+mixin catalogPageNav(page)
+  .gr-catalog-nav(class="flex justify-between text-xs")
+    if page.prev
+      a.transition-color(href=page.prev.url) &larr; Prev
+    a.transition-color.ml-2(href="/" class="md:hidden") &sect; Index
+    if page.next
+      a.transition-color.ml-2(href=page.next.url) Next &rarr;
+
+div(class="px-4 md:px-6")
+  div(class="md:hidden")
+    +catalogPageNav(page)
+  div(class="md:w-9/12")
+    div(class="mt-6 md:mt-0")
+      if !page.isCatalogIndex
+        h2(class="text-gray-100")!=page.title
+      if page.caption
+        h3(class="text-gray-600")!=page.caption
+      if page.date
+        div(class="text-gray-700")=page.date
+    if page.body
+      div(class="mt-8 text-sm text-gray-500")!=page.body
+  if page.media
+    .-mx-4.mt-8
+      each media in page.media
+        if media.type == "image"
+          .lazyload-image.w-full.mb-6.opacity-0.transition-opacity(
+            data-src=media.src
+            style=`padding-bottom: ${media.paddingBottom}%`
+          )
+        else if media.type == "video"
+          .video.mb-6(class=media.class)
+            iframe(src=media.src)
+        else if media.type == "bandcampAlbum" || media.type == "bandcamp"
+          .video.mb-6.square
+            iframe(src=media.src seamless)
+  +catalogPageNav(page)

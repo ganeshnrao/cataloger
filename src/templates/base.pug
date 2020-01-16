@@ -1,0 +1,30 @@
+-
+  const isCatalogPage = page.template.startsWith("catalog");
+  const pageClass = isCatalogPage ? "catalog" : page.template;
+
+doctype html
+html.bg-gray-900.text-gray-400(lang="en" class=pageClass)
+  head
+    title=(page.altTitle || page.title)
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width , initial-scale=1, shrink-to-fit=no")
+    meta(http-equiv="x-ua-compatible" content="ie=edge")
+    link(rel="apple-touch-icon" sizes="180x180" href="/icon.png")
+    link(rel="icon" type="image/png" sizes="32x32" href="/icon.png")
+    if isCatalogPage
+      script(src="//use.typekit.com/doq7osi.js")
+      script try { Typekit.load(); } catch (e) {}
+    else
+      link(rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap")
+    link(rel="stylesheet" href="/main.css")
+  body.pb-12
+    block content
+    if !isProduction
+      div(class="fixed top-0 right-0 mt-12 mr-2 z-50")
+        span(class="block xs:hidden") all
+        span(class="hidden xs:block sm:hidden") xs
+        span(class="hidden sm:block md:hidden") sm
+        span(class="hidden md:block lg:hidden") md
+        span(class="hidden lg:block xl:hidden") lg
+        span(class="hidden xl:block") xl
+    script(src="/app.js")
