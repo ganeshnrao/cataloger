@@ -8,14 +8,12 @@ html.bg-gray-900.text-gray-400(lang="en" class=pageClass)
     title=(page.altTitle || page.title)
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width , initial-scale=1, shrink-to-fit=no")
+    if page.caption
+      meta(name="desription" content=page.caption)
     meta(http-equiv="x-ua-compatible" content="ie=edge")
     link(rel="apple-touch-icon" sizes="180x180" href="/icon.png")
     link(rel="icon" type="image/png" sizes="32x32" href="/icon.png")
-    if isCatalogPage
-      script(src="//use.typekit.com/doq7osi.js")
-      script try { Typekit.load(); } catch (e) {}
-    else
-      link(rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap")
+    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap")
     link(rel="stylesheet" href="/main.css")
   body.pb-12
     block content

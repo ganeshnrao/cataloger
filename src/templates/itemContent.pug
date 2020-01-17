@@ -2,35 +2,46 @@ mixin catalogPageNav(page)
   .gr-catalog-nav(class="flex justify-between text-xs")
     if page.prev
       a.transition-color(href=page.prev.url) &larr; Prev
-    a.transition-color(href="/" class=`md:hidden ${page.prev ? "ml-2" : ""}`) &sect; Index
+    a.transition-color.ml-2(href="/catalog" class="md:hidden") &sect; Index
     if page.next
       a.transition-color.ml-2(href=page.next.url) Next &rarr;
 
-div(class="px-4 md:px-6")
+-
+  const metaData = (pages.find(page => page.isCatalogIndex) || {}).metaData || {};
+  const artistName = metaData.artistName || metaData.name;
+
+div(class="px-4 md:px-6" itemscope itemtype="//schema.org/VisualArtwork")
   div(class="md:hidden")
     +catalogPageNav(page)
   div(class="md:w-9/12")
     div(class="mt-6 md:mt-0")
       if !page.isCatalogIndex
-        h2(class="text-gray-100")!=page.title
+        h2(class="text-gray-100" itemprop="name")!=page.title
       if page.caption
-        h3(class="text-gray-600")!=page.caption
+        h3(class="text-gray-600" itemprop="abstract")!=page.caption
       if page.date
-        div(class="text-gray-700")=page.date
+        div(class="text-gray-700" itemprop="dateCreated")=page.date
+      if page.tags && page.tags.length
+        div(class="hidden" itemprop="artform")= page.tags.join(", ")
+      if artistName
+        div(class="hidden" itemscope itemprop="artist" itemtype="//schema.org/Person")
+          div(itemprop="name")= artistName
     if page.body
-      div(class="mt-8 text-sm text-gray-500")!=page.body
+      div(class="mt-8 text-sm text-gray-500" itemprop="text")!=page.body
   if page.media
     .-mx-4.mt-8
-      each media in page.media
+      each media, index in page.media
         if media.type == "image"
           .lazyload-image.w-full.mb-6.opacity-0.transition-opacity(
             data-src=media.src
             style=`padding-bottom: ${media.paddingBottom}%`
           )
+            - const alttext = artistName ? `${artistName} - ${page.title}` : page.title;
+            meta(itemprop="image" content=media.src alt=`${altText} ${index}`)
         else if media.type == "video"
           .video.mb-6(class=media.class)
-            iframe(src=media.src)
+            iframe(src=media.src itemprop="video")
         else if media.type == "bandcampAlbum" || media.type == "bandcamp"
           .video.mb-6.square
-            iframe(src=media.src seamless)
+            iframe(src=media.src seamless itemprop="audio")
   +catalogPageNav(page)

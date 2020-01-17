@@ -2,6 +2,10 @@
 
 const transitionDurationMs = 250;
 
+function toArray(obj) {
+  return Array.prototype.slice.call(obj);
+}
+
 function isVisibleInView(el) {
   const rect = el.getBoundingClientRect();
   const elemTop = rect.top;
@@ -42,7 +46,7 @@ function loadVisibleItems(elementsToLoad) {
 }
 
 function initLazyLoader() {
-  const itemsToLoad = Array.from(
+  const itemsToLoad = toArray(
     document.getElementsByClassName("lazyload-image")
   ).map(el => ({ started: false, el, src: el.dataset.src, type: "image" }));
   window.addEventListener("scroll", () => loadVisibleItems(itemsToLoad));

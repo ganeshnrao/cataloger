@@ -3,6 +3,7 @@ url: /
 isCatalogIndex: true
 metaData:
   name: FooBar
+  artistName: Foo Bar
   logoIcon: /logo.svg
 template: index
 title: Catalog Index
