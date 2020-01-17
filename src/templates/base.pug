@@ -1,9 +1,5 @@
--
-  const isCatalogPage = page.template.startsWith("catalog");
-  const pageClass = isCatalogPage ? "catalog" : page.template;
-
 doctype html
-html.bg-gray-900.text-gray-400(lang="en" class=pageClass)
+html.bg-gray-900.text-gray-400(lang="en")
   head
     title=(page.altTitle || page.title)
     meta(charset="utf-8")
