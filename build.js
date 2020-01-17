@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const { promisify } = require("util");
 const _ = require("lodash");
@@ -17,6 +17,9 @@ const moment = require("moment");
 const rimraf = promisify(require("rimraf"));
 const browserify = require("browserify");
 const uglify = require("uglify-js");
+const imagemin = require("imagemin");
+const imageminMozjpeg = require("imagemin-mozjpeg");
+const imageminPngQuant = require("imagemin-pngquant");
 
 ncp.limit = 20;
 
@@ -93,6 +96,27 @@ async function buildScripts() {
   });
 }
 
+async function buildImages() {
+  if (!isProduction) {
+    return ncp("src/static", "dist");
+  }
+  console.log("Optimizing static assets");
+  const files = await imagemin(["./src/static/**/*"], {
+    destination: "./dist/",
+    plugins: [imageminMozjpeg(), imageminPngQuant()]
+  });
+  await Promise.map(
+    files,
+    async ({ sourcePath, destinationPath }) => {
+      const newDest = sourcePath.replace("./src/static", "dist");
+      if (destinationPath !== newDest) {
+        await fs.move(destinationPath, newDest);
+      }
+    },
+    { concurrency: 10 }
+  );
+}
+
 async function build() {
   const env = process.env.NODE_ENV || "development";
   const startMs = Date.now();
@@ -103,7 +127,7 @@ async function build() {
   await Promise.map(pages, page =>
     generateHtml({ pages, page, moment, isProduction }, templates)
   );
-  await Promise.join(buildStyles(), buildScripts(), ncp("src/static", "dist"));
+  await Promise.join(buildStyles(), buildScripts(), buildImages());
   const duration = Date.now() - startMs;
   console.log(`Built for ${env} in ${duration}ms`);
 }

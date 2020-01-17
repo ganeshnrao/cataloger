@@ -5,8 +5,8 @@
   "main": "build.js",
   "scripts": {
     "dev": "nodemon build.js --watch src -e md,html,js,css,pug,jpg,png,gif,svg",
-    "build": "NODE_ENV=production node build.js",
-    "serve": "echo 'Hit Cmd+C to kill the server' && serve dist"
+    "build": "node build.js",
+    "serve": "echo 'Hit Ctrl+C to kill the server' && serve dist"
   },
   "author": "ganeshnrao@me.com",
   "license": "ISC",
@@ -20,8 +20,12 @@
     "browserify": "^16.5.0",
     "cssnano": "^4.1.10",
     "front-matter": "^3.0.2",
+    "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
     "image-size": "^0.8.3",
+    "imagemin": "^7.0.1",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^8.0.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "make-dir": "^3.0.0",
